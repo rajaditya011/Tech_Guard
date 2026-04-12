@@ -12,10 +12,16 @@ const DEMO_USER = { role: 'new_device', username: 'demo_admin', demo: true };
 async function isBackendReachable() {
   try {
     const res = await fetch(`${API_URL}/api/auth/me`, {
-      method: 'HEAD',
+      method: 'GET',
       signal: AbortSignal.timeout(3000),
     });
-    // If we get any HTTP response (even 401), the backend is alive
+    
+    // If Vercel serves the rewrite to index.html, the content-type will be text/html.
+    // A real backend will return application/json.
+    const contentType = res.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      return false;
+    }
     return true;
   } catch {
     return false;
