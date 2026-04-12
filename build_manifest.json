@@ -1,0 +1,97 @@
+{
+  "project": "HomeGuardian AI",
+  "version": "1.0.0",
+  "last_updated": "2026-04-11",
+  "chunks": [
+    {
+      "id": "00",
+      "name": "Manifest and Diagnostics",
+      "status": "complete",
+      "depends_on": [],
+      "parallel_ok": false,
+      "completed_at": "2026-04-11T13:00:00Z",
+      "completed_by": "Gemini (Antigravity)"
+    },
+    {
+      "id": "01",
+      "name": "Project Setup",
+      "status": "complete",
+      "depends_on": ["00"],
+      "parallel_ok": false,
+      "completed_at": "2026-04-11T13:10:00Z",
+      "completed_by": "Gemini (Antigravity)"
+    },
+    {
+      "id": "02",
+      "name": "Backend Core",
+      "status": "complete",
+      "depends_on": ["01"],
+      "parallel_ok": false,
+      "completed_at": "2026-04-11T13:20:00Z",
+      "completed_by": "Gemini (Antigravity)"
+    },
+    {
+      "id": "03",
+      "name": "Sensor Data Pipeline",
+      "status": "complete",
+      "depends_on": ["02"],
+      "parallel_ok": true,
+      "completed_at": "2026-04-11T13:25:00Z",
+      "completed_by": "Gemini (Antigravity)"
+    },
+    {
+      "id": "04",
+      "name": "ML and Anomaly Detection",
+      "status": "complete",
+      "depends_on": ["03"],
+      "parallel_ok": false,
+      "completed_at": "2026-04-11T08:02:00Z",
+      "completed_by": "Gemini (Antigravity)"
+    },
+    {
+      "id": "05",
+      "name": "Intelligence Response Layer",
+      "status": "complete",
+      "depends_on": ["04"],
+      "parallel_ok": false,
+      "completed_at": "2026-04-11T08:05:00Z",
+      "completed_by": "Gemini (Antigravity)"
+    },
+    {
+      "id": "06",
+      "name": "Frontend Shell and Design System",
+      "status": "complete",
+      "depends_on": ["02"],
+      "parallel_ok": true,
+      "completed_at": "2026-04-11T08:10:00Z",
+      "completed_by": "Gemini (Antigravity)"
+    },
+    {
+      "id": "07",
+      "name": "Old Device Portal",
+      "status": "complete",
+      "depends_on": ["06"],
+      "parallel_ok": true,
+      "completed_at": "2026-04-11T08:14:00Z",
+      "completed_by": "Gemini (Antigravity)"
+    },
+    {
+      "id": "08",
+      "name": "New Device Dashboard",
+      "status": "complete",
+      "depends_on": ["06"],
+      "parallel_ok": true,
+      "completed_at": "2026-04-11T08:18:00Z",
+      "completed_by": "Gemini (Antigravity)"
+    },
+    {
+      "id": "09",
+      "name": "Secret Weapon, Security, Deploy",
+      "status": "complete",
+      "depends_on": ["05", "08"],
+      "parallel_ok": false,
+      "completed_at": "2026-04-11T08:27:00Z",
+      "completed_by": "Gemini (Antigravity)"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # ---- MQTT Broker ----
+  mqtt-broker:
+    image: eclipse-mosquitto:2
+    container_name: homeguardian-mqtt
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    restart: unless-stopped
+
+  # ---- Backend API ----
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: homeguardian-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./backend/data:/app/data
+      - ./backend/clips:/app/clips
+      - ./backend/models:/app/models
+    depends_on:
+      - mqtt-broker
+    restart: unless-stopped
+
+  # ---- Frontend ----
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: homeguardian-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  # ---- Nginx Reverse Proxy ----
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: homeguardian-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - api
+      - frontend
+    restart: unless-stopped
