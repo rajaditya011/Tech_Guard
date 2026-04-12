@@ -52,7 +52,7 @@ export default function FloorPlan({ compact = false }) {
     
     const fetchHeatmaps = async () => {
       try {
-        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+        const API_URL = import.meta.env.VITE_API_URL || '';
         const promises = INITIAL_ZONES.map(z => 
           fetch(`${API_URL}/api/dashboard/heatmap/${z.id}`, {
             headers: { Authorization: `Bearer ${token}` }

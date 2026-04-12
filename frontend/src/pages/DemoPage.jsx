@@ -11,7 +11,7 @@ export default function DemoPage() {
 
   useEffect(() => {
     let mounted = true;
-    fetch((import.meta.env.VITE_API_URL || 'http://localhost:8000') + '/api/demo/scenarios')
+    fetch((import.meta.env.VITE_API_URL || '') + '/api/demo/scenarios')
       .then(res => res.json())
       .then(data => { if (mounted) setScenarios(data); })
       .catch(console.error);
@@ -32,7 +32,7 @@ export default function DemoPage() {
         }
       }
 
-      await fetch((import.meta.env.VITE_API_URL || 'http://localhost:8000') + `/api/demo/start/${id}`, { method: 'POST' });
+      await fetch((import.meta.env.VITE_API_URL || '') + `/api/demo/start/${id}`, { method: 'POST' });
       navigate('/new-device/dashboard');
     } catch (e) {
       console.error(e);
@@ -79,7 +79,7 @@ export default function DemoPage() {
           <div className="mt-8 border-t border-[var(--border-secondary)] pt-6">
             <button
               onClick={async () => {
-                await fetch((import.meta.env.VITE_API_URL || 'http://localhost:8000') + '/api/demo/clear', { method: 'POST' });
+                await fetch((import.meta.env.VITE_API_URL || '') + '/api/demo/clear', { method: 'POST' });
                 alert('Demo data wiped!');
               }}
               className="px-4 py-2 rounded text-xs font-mono cursor-pointer border hover:opacity-80 transition-opacity"

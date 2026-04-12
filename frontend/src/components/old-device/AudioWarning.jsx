@@ -9,8 +9,9 @@ export default function AudioWarning() {
 
   useEffect(() => {
     if (!user?.id) return;
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-    const wsUrl = API_URL.replace('http', 'ws') + `/ws/old-device/${user.id}`;
+    const API_URL = import.meta.env.VITE_API_URL || '';
+    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = API_URL ? API_URL.replace('http', 'ws') + `/ws/old-device/${user.id}` : `${wsProtocol}//${window.location.host}/ws/old-device/${user.id}`;
     const ws = new WebSocket(wsUrl);
     
     ws.onmessage = (event) => {

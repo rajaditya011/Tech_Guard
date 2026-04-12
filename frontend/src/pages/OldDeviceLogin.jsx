@@ -193,7 +193,7 @@ export default function OldDeviceLogin() {
       if (isRegister) {
         const data = await register(email, password, 'old_device');
         // Register the sensor node with the location zone
-        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+        const API_URL = import.meta.env.VITE_API_URL || '';
         await fetch(`${API_URL}/api/sensors/`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${data.access_token}` },

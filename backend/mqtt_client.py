@@ -8,7 +8,12 @@ import logging
 import threading
 from typing import Callable, Dict, List
 
-import paho.mqtt.client as mqtt
+try:
+    import paho.mqtt.client as mqtt
+    from paho.mqtt.enums import CallbackAPIVersion
+    MQTT_AVAILABLE = True
+except ImportError:
+    MQTT_AVAILABLE = False
 
 from config import settings
 
@@ -32,15 +37,23 @@ class MQTTManager:
     """Manages MQTT connection and message routing."""
 
     def __init__(self):
-        self.client = mqtt.Client(client_id="homeguardian-hub", protocol=mqtt.MQTTv311)
+        if MQTT_AVAILABLE:
+            self.client = mqtt.Client(callback_api_version=CallbackAPIVersion.VERSION1, client_id="homeguardian-hub", protocol=mqtt.MQTTv311)
+        else:
+            self.client = None
+            logger.warning("paho-mqtt not available. MQTT features disabled.")
         self.connected = False
         self._handlers: Dict[str, List[Callable]] = {}
         self._lock = threading.Lock()
-        self.client.on_connect = self._on_connect
-        self.client.on_disconnect = self._on_disconnect
-        self.client.on_message = self._on_message
+        if self.client:
+            self.client.on_connect = self._on_connect
+            self.client.on_disconnect = self._on_disconnect
+            self.client.on_message = self._on_message
 
     def connect(self):
+        if not self.client:
+            logger.warning("MQTT client not available. Skipping connection.")
+            return
         try:
             logger.info(f"Connecting to MQTT broker at {settings.MQTT_BROKER_URL}:{settings.MQTT_PORT}")
             self.client.connect(settings.MQTT_BROKER_URL, settings.MQTT_PORT, keepalive=60)
@@ -53,19 +66,22 @@ class MQTTManager:
                 raise
 
     def disconnect(self):
-        self.client.loop_stop()
-        self.client.disconnect()
+        if self.client:
+            self.client.loop_stop()
+            self.client.disconnect()
         self.connected = False
 
     def subscribe(self, topic: str, handler: Callable):
         with self._lock:
             if topic not in self._handlers:
                 self._handlers[topic] = []
-                if self.connected:
+                if self.connected and self.client:
                     self.client.subscribe(topic)
             self._handlers[topic].append(handler)
 
     def publish(self, topic: str, payload: dict, qos: int = 1):
+        if not self.client:
+            return
         try:
             message = json.dumps(payload)
             self.client.publish(topic, message, qos=qos)

@@ -11,7 +11,7 @@ export default function ReasoningReplay() {
     if (!token) return;
     let isMounted = true;
     
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    const API_URL = import.meta.env.VITE_API_URL || '';
     
     fetch(`${API_URL}/api/predictions/`, {
       headers: { Authorization: `Bearer ${token}` }

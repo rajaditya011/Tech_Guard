@@ -11,7 +11,7 @@ export default function AlertFeed({ compact = false }) {
     let isMounted = true;
     const fetchAlerts = async () => {
       try {
-        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+        const API_URL = import.meta.env.VITE_API_URL || '';
         const res = await fetch(`${API_URL}/api/anomalies/?limit=10`, {
           headers: { Authorization: `Bearer ${token}` }
         });
